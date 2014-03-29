@@ -1,3 +1,4 @@
+.idea/
 *.un~
 *.swp
 tags
@@ -6,3 +7,4 @@ project/boot
 .history
 project.vim
 *.old
+.gitignore

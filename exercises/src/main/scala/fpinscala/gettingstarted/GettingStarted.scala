@@ -13,8 +13,11 @@ object MyModule {
     msg.format(x, abs(x))
   }
 
-  def main(args: Array[String]): Unit =
-    println(formatAbs(-42))
+  def main(args: Array[String]): Unit = {
+    println(formatResult("Fibonacci-Tail Recursive computation", 10, fibonacci_tr))
+    println(formatResult("Fibonacci-Non-Tail-Recursive computation", 6, fibonacci_ntr))
+    println(formatResult("Absolute Value computation", -9, abs))
+  }
 
   // A definition of factorial, using a local, tail recursive function  
   def factorial(n: Int): Int = {
@@ -34,9 +37,34 @@ object MyModule {
     acc
   }
 
-  // Exercise 1: Write a function to compute the nth fibonacci number
+  /*
+   * Exercise 1: Write a function to compute the nth fibonacci number
+   * By convention fibonacci(0) = 0 and fibonacci(1) = 1
+   * So fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)
+   * e.g fibonacci(2) = 1, fibonacci(5) = 5
+   */
 
-  def fib(n: Int): Int = ???
+  /* Non-tail-recursive version */
+  def fibonacci_ntr(n: Int): Int = {
+    def go(n: Int): Int =
+      if(n == 0) 0
+      else if(n == 1) 1
+      else go(n - 1) + go(n - 2)
+
+    go(n)
+  }
+
+  /* Tail-recursive version */
+  def fibonacci_tr(n: Int): Int = {
+
+    @annotation.tailrec
+    def go(n: Int, a: Int, b: Int): Int = {
+      if(n == 0)  b
+      else  go(n - 1, a + b, a)
+    }
+
+    go(n, 1, 0)
+  }
 
   // This definition and `formatAbs` are very similar..
   private def formatFactorial(n: Int) = { 
@@ -47,8 +75,8 @@ object MyModule {
   // We can generalize `formatAbs` and `formatFactorial` to 
   // accept a _function_ as a parameter
   def formatResult(name: String, n: Int, f: Int => Int) = { 
-    val msg = "The %s of %d is %d." 
-    msg.format(n, f(n))
+    val msg = "The [%s] of %d is %d."
+    msg.format(name, n, f(n))
   }
 }
 
